@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trắc Nghiệm Thời Gian Hấp — Long Wang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@500;700;900&family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2B22;
+    --jade:#3E7C59;
+    --jade-deep:#2A5A3E;
+    --jade-light:#9CC7A9;
+    --seal:#B23A2E;
+    --seal-deep:#8E2A20;
+    --bamboo:#C9A66B;
+    --bamboo-deep:#A9834C;
+    --paper:#F1E9D2;
+    --paper-dark:#E4D6AC;
+    --paper-darker:#D8C594;
+    --wrong-bg:#F6DAD6;
+    --right-bg:#D9EBDF;
+    --shadow: 0 10px 30px rgba(27,43,34,0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(62,124,89,0.10), transparent 45%),
+      radial-gradient(circle at 88% 92%, rgba(178,58,46,0.08), transparent 40%),
+      var(--paper);
+    background-color:var(--paper);
+    color:var(--ink);
+    font-family:'Be Vietnam Pro', sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 16px 60px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(27,43,34,0.028) 0px, rgba(27,43,34,0.028) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  h1,h2,h3{font-family:'Noto Serif', serif; margin:0;}
+
+  /* ---------- Header ---------- */
+  .top{
+    text-align:center;
+    max-width:640px;
+    margin-bottom:22px;
+    position:relative;
+    z-index:1;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--seal);
+    background:rgba(178,58,46,0.08);
+    border:1px solid rgba(178,58,46,0.28);
+    padding:5px 14px 5px 10px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--seal);}
+  .top h1{
+    font-size:clamp(30px, 5.4vw, 46px);
+    font-weight:900;
+    color:var(--jade-deep);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+  }
+  .top h1 span{color:var(--seal);}
+  .top p{
+    margin-top:10px;
+    font-size:15.5px;
+    color:#4A5A4F;
+    line-height:1.55;
+  }
+
+  /* ---------- Steamer basket signature ---------- */
+  .steamer-wrap{
+    position:relative;
+    width:min(92vw, 460px);
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:6px auto 26px;
+    z-index:1;
+  }
+  .ring{
+    position:absolute;
+    border-radius:50%;
+    border:2.5px solid var(--bamboo-deep);
+    opacity:0.55;
+  }
+  .ring.r1{inset:0%;}
+  .ring.r2{inset:6.5%; opacity:0.42;}
+  .ring.r3{inset:13%; opacity:0.3;}
+  .ring.slats{
+    inset:0;
+    border:none;
+    background:
+      repeating-conic-gradient(from 0deg, rgba(169,131,76,0.35) 0deg 2.6deg, transparent 2.6deg 9deg);
+    -webkit-mask:radial-gradient(circle, transparent 62%, #000 63%, #000 100%);
+    mask:radial-gradient(circle, transparent 62%, #000 63%, #000 100%);
+  }
+  .steam{
+    position:absolute;
+    bottom:78%;
+    width:5px;
+    border-radius:6px;
+    background:linear-gradient(to top, rgba(158,199,169,0.85), rgba(158,199,169,0));
+    filter:blur(1.5px);
+    animation:rise 3.6s ease-in-out infinite;
+  }
+  .steam.s1{left:38%; height:60px; animation-delay:0s;}
+  .steam.s2{left:50%; height:78px; animation-delay:1.1s;}
+  .steam.s3{left:62%; height:56px; animation-delay:2.2s;}
+  @keyframes rise{
+    0%{ transform:translateY(0) scaleX(1); opacity:0;}
+    15%{opacity:0.9;}
+    70%{opacity:0.35;}
+    100%{ transform:translateY(-70px) scaleX(1.6); opacity:0;}
+  }
+  .card-inner{
+    position:relative;
+    z-index:2;
+    width:78%;
+    background:var(--paper-dark);
+    border-radius:50%;
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: inset 0 0 0 3px rgba(169,131,76,0.4), var(--shadow);
+  }
+  .card-inner .glyph{
+    font-family:'Noto Serif', serif;
+    font-weight:900;
+    font-size:clamp(48px,10vw,74px);
+    color:var(--jade-deep);
+    opacity:0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .steam{animation:none; opacity:0;}
+  }
+
+  /* ---------- Panels (start / quiz / end) ---------- */
+  .panel{
+    width:min(94vw, 620px);
+    z-index:1;
+  }
+  .hidden{display:none !important;}
+
+  /* start screen */
+  .start-card{
+    background:var(--paper-dark);
+    border:1px solid rgba(169,131,76,0.4);
+    border-radius:20px;
+    padding:26px 24px 28px;
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .start-card h2{
+    font-size:20px;
+    color:var(--jade-deep);
+    margin-bottom:6px;
+  }
+  .start-card p.sub{
+    font-size:13.5px;
+    color:#5B6B60;
+    margin-bottom:20px;
+  }
+  .count-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .count-btn{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:16px;
+    padding:16px 8px;
+    border-radius:12px;
+    border:1.5px solid var(--bamboo-deep);
+    background:var(--paper);
+    color:var(--ink);
+    cursor:pointer;
+    transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .count-btn small{display:block; font-family:'Be Vietnam Pro',sans-serif; font-weight:500; font-size:11px; color:#6a7a6f; margin-top:3px;}
+  .count-btn:hover{background:var(--jade-light); transform:translateY(-2px); box-shadow:0 6px 14px rgba(27,43,34,0.15);}
+  .count-btn.active{background:var(--jade); color:#fff; border-color:var(--jade-deep);}
+
+  .start-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:var(--seal);
+    color:#fdf6ee;
+    font-family:'Noto Serif',serif;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:.02em;
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(178,58,46,0.3);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .start-btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px rgba(178,58,46,0.36);}
+  .start-btn:active{transform:translateY(0px);}
+
+  /* quiz top bar */
+  .quiz-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+    gap:12px;
+  }
+  .tiers{
+    display:flex;
+    gap:4px;
+    flex-wrap:wrap;
+    max-width:70%;
+  }
+  .tier-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:rgba(169,131,76,0.35);
+    transition:background .25s ease, transform .25s ease;
+  }
+  .tier-dot.done-right{background:var(--jade);}
+  .tier-dot.done-wrong{background:var(--seal);}
+  .tier-dot.current{transform:scale(1.5); background:var(--bamboo-deep);}
+
+  .score-stamp{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:13px;
+    color:var(--seal-deep);
+    border:2px solid var(--seal);
+    border-radius:8px;
+    padding:5px 10px;
+    transform:rotate(-3deg);
+    white-space:nowrap;
+    background:rgba(178,58,46,0.06);
+  }
+
+  /* question card */
+  .qcard{
+    background:var(--paper-dark);
+    border:1px solid rgba(169,131,76,0.4);
+    border-radius:20px;
+    padding:26px 22px 24px;
+    box-shadow:var(--shadow);
+  }
+  .qcat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--jade-deep);
+    background:rgba(62,124,89,0.12);
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+  .qtitle{
+    font-size:22px;
+    line-height:1.4;
+    margin-bottom:4px;
+  }
+  .qtitle b{color:var(--seal); font-weight:700;}
+  .qask{
+    font-size:14.5px;
+    color:#5B6B60;
+    margin-bottom:20px;
+  }
+
+  .options{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:11px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-align:left;
+    background:var(--paper);
+    border:1.5px solid rgba(169,131,76,0.5);
+    border-radius:12px;
+    padding:13px 15px;
+    font-family:'Be Vietnam Pro', sans-serif;
+    font-size:15.5px;
+    font-weight:500;
+    color:var(--ink);
+    cursor:pointer;
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--jade); transform:translateX(2px);}
+  .opt .lbl{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:13px;
+    width:24px; height:24px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bamboo);
+    color:#fff;
+    flex-shrink:0;
+  }
+  .opt:disabled{cursor:default;}
+  .opt.correct{
+    background:var(--right-bg);
+    border-color:var(--jade);
+    box-shadow:0 0 0 2px rgba(62,124,89,0.25) inset;
+  }
+  .opt.correct .lbl{background:var(--jade);}
+  .opt.wrong{
+    background:var(--wrong-bg);
+    border-color:var(--seal);
+    box-shadow:0 0 0 2px rgba(178,58,46,0.22) inset;
+    animation:shake .35s ease;
+  }
+  .opt.wrong .lbl{background:var(--seal);}
+  .opt.dim{opacity:0.5;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-4px);}
+    75%{transform:translateX(4px);}
+  }
+
+  .feedback{
+    margin-top:16px;
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.5;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:var(--right-bg); color:var(--jade-deep); border:1px solid rgba(62,124,89,0.3);}
+  .feedback.bad{background:var(--wrong-bg); color:var(--seal-deep); border:1px solid rgba(178,58,46,0.3);}
+  .feedback b{font-family:'JetBrains Mono',monospace;}
+
+  .next-row{
+    margin-top:18px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .next-btn{
+    padding:11px 22px;
+    border:none;
+    border-radius:10px;
+    background:var(--jade);
+    color:#fff;
+    font-family:'Noto Serif', serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(62,124,89,0.32);
+    transition:transform .12s ease;
+    display:none;
+  }
+  .next-btn.show{display:inline-block;}
+  .next-btn:hover{transform:translateY(-2px);}
+
+  /* end screen */
+  .end-card{
+    background:var(--paper-dark);
+    border:1px solid rgba(169,131,76,0.4);
+    border-radius:20px;
+    padding:30px 24px;
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .end-card .big-score{
+    font-family:'Noto Serif', serif;
+    font-weight:900;
+    font-size:54px;
+    color:var(--jade-deep);
+    margin:6px 0 2px;
+  }
+  .end-card .big-score span{color:var(--seal); font-size:28px;}
+  .end-card p.msg{color:#5B6B60; font-size:14.5px; margin-bottom:20px;}
+  .review-list{
+    text-align:left;
+    max-height:280px;
+    overflow-y:auto;
+    border-top:1px solid rgba(169,131,76,0.4);
+    padding-top:14px;
+    margin-bottom:20px;
+  }
+  .review-item{
+    font-size:13.5px;
+    padding:8px 0;
+    border-bottom:1px dashed rgba(169,131,76,0.35);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .review-item:last-child{border-bottom:none;}
+  .review-item .mark{font-weight:700; flex-shrink:0;}
+  .review-item.right .mark{color:var(--jade);}
+  .review-item.wrong .mark{color:var(--seal);}
+  .review-item .txt b{font-family:'JetBrains Mono',monospace;}
+  .end-actions{display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
+  .end-actions button{
+    padding:12px 20px;
+    border-radius:10px;
+    border:1.5px solid var(--jade-deep);
+    background:transparent;
+    color:var(--jade-deep);
+    font-family:'Noto Serif',serif;
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+  }
+  .end-actions button.primary{
+    background:var(--seal);
+    border-color:var(--seal);
+    color:#fdf6ee;
+  }
+
+  footer{
+    margin-top:34px;
+    font-size:12px;
+    color:#8a9a8e;
+    text-align:center;
+    z-index:1;
+  }
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+    .qtitle{font-size:19px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <div class="eyebrow"><span class="dot"></span>LONG WANG · THỜI GIAN HẤP</div>
+    <h1>Trắc Nghiệm <span>Thời Gian Hấp</span></h1>
+    <p>Kiểm tra trí nhớ về thời gian hấp từng món trong thực đơn — bao gồm cả những món hấp hai mốc thời gian (ví dụ 5+5 phút).</p>
+  </div>
+
+  <div class="steamer-wrap" aria-hidden="true">
+    <div class="ring slats"></div>
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+    <div class="steam s1"></div>
+    <div class="steam s2"></div>
+    <div class="steam s3"></div>
+    <div class="card-inner"><div class="glyph" id="heroGlyph"><img class="logo_img" alt="Long Wang" width="236px" height="46px" src="https://longwang.vn/images/config/logo-long-wang-in-o11_1672717935_1672730515_1684223722.png" srcset="https://longwang.vn/images/config/logo-long-wang-in-o11_1672717935_1672730515_1684223722.png.webp"></div></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="panel" id="startPanel">
+    <div class="start-card">
+      <h2>Chọn số câu hỏi</h2>
+      <p class="sub">Ngân hàng câu hỏi có 100 món ăn kèm thời gian hấp.</p>
+      <div class="count-grid" id="countGrid">
+        <button class="count-btn" data-n="10">10<small>Nhanh</small></button>
+        <button class="count-btn" data-n="20">20<small>Vừa</small></button>
+        <button class="count-btn active" data-n="40">40<small>Đầy đủ hơn</small></button>
+        <button class="count-btn" data-n="100">100<small>Toàn bộ</small></button>
+      </div>
+      <button class="start-btn" id="startBtn">Bắt đầu hấp thử ▸</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="panel hidden" id="quizPanel">
+    <div class="quiz-bar">
+      <div class="tiers" id="tiers"></div>
+      <div class="score-stamp" id="scoreStamp">0 / 0</div>
+    </div>
+    <div class="qcard">
+      <div class="qcat" id="qcat">Danh mục</div>
+      <div class="qtitle">Món <b id="qname">…</b> có thời gian hấp bao nhiêu phút?</div>
+      <div class="qask">Chọn đáp án đúng bên dưới. Nếu món hấp theo hai mốc, hãy chọn đáp án nêu rõ cả hai mốc.</div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="next-row"><button class="next-btn" id="nextBtn">Câu tiếp theo ▸</button></div>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div class="panel hidden" id="endPanel">
+    <div class="end-card">
+      <div class="qcat" style="background:rgba(178,58,46,0.1); color:var(--seal-deep);">Kết quả</div>
+      <div class="big-score" id="finalScore">0<span>/0</span></div>
+      <p class="msg" id="finalMsg"></p>
+      <div class="review-list" id="reviewList"></div>
+      <div class="end-actions">
+        <button class="primary" id="retryBtn">Làm lại</button>
+        <button id="homeBtn">Chọn số câu khác</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Dữ liệu tổng hợp từ bảng thời gian hấp thực đơn Long Wang</footer>
+
+<script>
+/* ---------------- DATA ---------------- */
+/* t: number (phút) hoặc [giai đoạn 1, giai đoạn 2] cho món hấp 2 mốc */
+const DATA = [
+ // KHAI VỊ
+ {c:"Khai vị", n:"Chân Gà Tàu Xì", t:4},
+ {c:"Khai vị", n:"Sườn Hấp Tàu Xì", t:[5,5]},
+ {c:"Khai vị", n:"Tôm Hấp Trứng Hong Kong (Size Lớn)", t:10},
+ {c:"Khai vị", n:"Tôm Hấp Trứng Hong Kong (Size Nhỏ)", t:10},
+ {c:"Khai vị", n:"Miến Thiên Hương", t:6},
+ {c:"Khai vị", n:"Tôm Hấp Miến Hong Kong", t:[4,1]},
+ // DIMSUM
+ {c:"Dimsum", n:"Sủi Cảo Cay Tứ Xuyên", t:5},
+ {c:"Dimsum", n:"Há Cảo Sò Điệp", t:5},
+ {c:"Dimsum", n:"Há Cảo Tôm", t:7},
+ {c:"Dimsum", n:"Há Cảo Ngọc Bích Nhân Tôm", t:7},
+ {c:"Dimsum", n:"Há Cảo Than Tre Nhân Tôm", t:7},
+ {c:"Dimsum", n:"Tiểu Long Bao", t:10},
+ {c:"Dimsum", n:"Bánh Cuốn Nhân Tôm", t:[3,1]},
+ {c:"Dimsum", n:"Xíu Mại Tôm Thịt", t:8},
+ {c:"Dimsum", n:"Bánh Bao Kim Sa", t:5},
+ {c:"Dimsum", n:"Bánh Bao Trà Xanh", t:5},
+ {c:"Dimsum", n:"Bánh Bao Nấm", t:5},
+ {c:"Dimsum", n:"Bánh Bao Song vị / Tam vị", t:5},
+ {c:"Dimsum", n:"Bánh Bao Kim Sa (Cái)", t:5},
+ {c:"Dimsum", n:"Bánh Bao Trà Xanh (Cái)", t:5},
+ {c:"Dimsum", n:"Bánh Bao Nấm (Cái)", t:5},
+ // RAU & NẤM
+ {c:"Rau & Nấm hữu cơ", n:"Rau Củ Tươi (Set)", t:5},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Tươi (Set)", t:6},
+ {c:"Rau & Nấm hữu cơ", n:"Rau Nấm Tươi (Set)", t:5},
+ {c:"Rau & Nấm hữu cơ", n:"Súp Lơ Xanh", t:4},
+ {c:"Rau & Nấm hữu cơ", n:"Xà Lách Romaine", t:2.5},
+ {c:"Rau & Nấm hữu cơ", n:"Khoai Lang", t:4},
+ {c:"Rau & Nấm hữu cơ", n:"Bắp Mỹ", t:7},
+ {c:"Rau & Nấm hữu cơ", n:"Bí Ngòi", t:4},
+ {c:"Rau & Nấm hữu cơ", n:"Bí Đỏ", t:4},
+ {c:"Rau & Nấm hữu cơ", n:"Cà Rốt Baby", t:4},
+ {c:"Rau & Nấm hữu cơ", n:"Cải Ngồng", t:3},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Mối", t:6},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Kim Châm", t:3},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Linh Chi Trắng", t:5},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Linh Chi Nâu", t:5},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Đùi Gà", t:5},
+ {c:"Rau & Nấm hữu cơ", n:"Nấm Đùi Gà Baby", t:5},
+ // HẢI SẢN
+ {c:"Hải sản", n:"Bào Ngư Xốt Xá Xíu", t:5},
+ {c:"Hải sản", n:"Cá Mú Trân Châu Hấp Hong Kong", t:[6,4]},
+ {c:"Hải sản", n:"Cá Mú Trân Châu Xốt Chanh Thái", t:[9,1]},
+ {c:"Hải sản", n:"Cá Chẽm Hấp Hong Kong", t:[4,2]},
+ {c:"Hải sản", n:"Cá Chẽm Xốt Chanh Thái", t:[4,1]},
+ {c:"Hải sản", n:"Cá Chình Hấp Tiêu", t:6},
+ {c:"Hải sản", n:"Cá Tầm Hấp Hành", t:5},
+ {c:"Hải sản", n:"Cá Chép Giòn Hấp Gừng", t:6},
+ {c:"Hải sản", n:"Tôm Hấp Tỏi Miến", t:5},
+ {c:"Hải sản", n:"Tôm Sú Nhảy", t:4},
+ {c:"Hải sản", n:"Tôm Sú Hấp Nấm", t:4},
+ {c:"Hải sản", n:"Tôm Sú Hấp Phô Mai", t:4},
+ {c:"Hải sản", n:"Bạch Tuộc Trân Bửu Xốt Thái", t:[8,1]},
+ {c:"Hải sản", n:"Bạch Tuộc Trân Bửu Hấp Gừng", t:9},
+ {c:"Hải sản", n:"Mực Ống Hấp Gừng", t:5},
+ {c:"Hải sản", n:"Mực Ống Hấp Thái", t:6},
+ {c:"Hải sản", n:"Mực Nút Hấp Gừng", t:4},
+ {c:"Hải sản", n:"Vẹm Xanh Xốt Gratin", t:4},
+ {c:"Hải sản", n:"Vẹm Xanh Xốt Tỏi", t:4},
+ {c:"Hải sản", n:"Vẹm Xanh Xốt XO", t:4},
+ {c:"Hải sản", n:"Vẹm Xanh Xốt Thái", t:4},
+ {c:"Hải sản", n:"Ốc Hương Hấp Sả", t:3},
+ {c:"Hải sản", n:"Ốc Bulot Hấp Sả", t:8},
+ {c:"Hải sản", n:"Ốc Bulot Xốt Nấm", t:8},
+ {c:"Hải sản", n:"Sò Thưng Hấp Sả", t:4},
+ {c:"Hải sản", n:"Cồi Sò Điệp Xốt Gratin", t:4},
+ {c:"Hải sản", n:"Sò Điệp Hấp Tỏi Miến", t:4},
+ {c:"Hải sản", n:"Cồi Sò Điệp Xốt XO", t:4},
+ {c:"Hải sản", n:"Hàu Phô Mai Trứng Muối", t:3},
+ {c:"Hải sản", n:"Hàu Hấp Gừng", t:3},
+ {c:"Hải sản", n:"Hàu Sữa Xốt Tỏi", t:3},
+ {c:"Hải sản", n:"Ngao Sần Xốt Nấm Mối", t:4},
+ {c:"Hải sản", n:"Ngao Sần Lưỡi Đỏ", t:4},
+ {c:"Hải sản", n:"Ngao Trắng Hấp Gừng", t:3},
+ {c:"Hải sản", n:"Ngao Trắng Hấp Thái", t:5},
+ // THỊT BÒ
+ {c:"Thịt bò", n:"Bò Ngũ Cốc Hấp Tía Tô", t:3},
+ {c:"Thịt bò", n:"Dẻ Sườn Bò Mỹ", t:4},
+ {c:"Thịt bò", n:"Ba Chỉ Bò Mỹ Cuộn Nấm Kim Châm", t:4},
+ {c:"Thịt bò", n:"Ba Chỉ Bò Mỹ", t:3},
+ // CÁC LOẠI THỊT KHÁC
+ {c:"Các loại thịt khác", n:"Gà Xốt Nấm", t:[4,4]},
+ {c:"Các loại thịt khác", n:"Heo Giòn Xốt Tiêu Xanh", t:5},
+ // HÀNG VIÊN
+ {c:"Hàng viên", n:"Trân Châu Sò Điệp Củ Sen", t:5},
+ {c:"Hàng viên", n:"Trân Châu Tôm Phô Mai Củ Sen", t:5},
+ {c:"Hàng viên", n:"Nấm Đông Cô Nhân Sò Điệp", t:10},
+ {c:"Hàng viên", n:"Nấm Đông Cô Nhân Tôm", t:10},
+ {c:"Hàng viên", n:"Nấm Đông Cô Nhân Heo", t:10},
+ {c:"Hàng viên", n:"Tàu Hũ Tôm Tươi Cuộn Nấm Đông Trùng", t:4},
+ {c:"Hàng viên", n:"Rong Biển Cuốn Tôm Tươi", t:4},
+ {c:"Hàng viên", n:"Hải Sản Cuốn Thanh Xuân", t:[4,3]},
+ {c:"Hàng viên", n:"Chả Cá Thác Lác Nhồi Mướp Hương", t:6},
+ {c:"Hàng viên", n:"Chả Cá Thác Lác Thì Là", t:6},
+ {c:"Hàng viên", n:"Đậu Hũ Phô Mai", t:6},
+ {c:"Hàng viên", n:"Xúc Xích Phô Mai", t:5},
+ {c:"Hàng viên", n:"Nấm Bụng Dê Hấp Nhân Tôm", t:6},
+ // VỊ THUỐC BỔ DƯỠNG
+ {c:"Vị thuốc bổ dưỡng", n:"Bào Ngư Tiềm Nấm Đông Trùng", t:4},
+ {c:"Vị thuốc bổ dưỡng", n:"Cá Hồi Xốt Tiêu Xanh", t:5},
+ {c:"Vị thuốc bổ dưỡng", n:"Gà Ta Hầm Sâm", t:[10,5]},
+ {c:"Vị thuốc bổ dưỡng", n:"Sườn Bò Hầm Atiso", t:5},
+ {c:"Vị thuốc bổ dưỡng", n:"Đuôi Bò Tiềm Thuốc Bắc Củ Sen", t:6},
+ {c:"Vị thuốc bổ dưỡng", n:"Chim Câu Hấp Sen Nấm", t:[5,9]},
+ // CÁC MÓN DÙNG KÈM CHÁO
+ {c:"Món dùng kèm cháo", n:"Cá Hồi (kèm cháo)", t:2},
+ {c:"Món dùng kèm cháo", n:"Sườn Heo Non", t:10},
+];
+
+/* ---------------- Helpers ---------------- */
+function fmt(t){
+  if(Array.isArray(t)) return t[0]+"+"+t[1]+" phút";
+  const s = (t % 1 !== 0) ? String(t).replace(".", ",") : String(t);
+  return s + " phút";
+}
+function isDouble(t){ return Array.isArray(t); }
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildOptions(item){
+  const correct = fmt(item.t);
+  const optionSet = new Set([correct]);
+
+  if(isDouble(item.t)){
+    // trap: total sum as a single (wrong) figure — tests whether they know it needs 2 mốc
+    const sum = item.t[0] + item.t[1];
+    optionSet.add(sum + " phút");
+    // pull from other double-stage dishes
+    const otherDoubles = shuffle(DATA.filter(d => d!==item && isDouble(d.t)));
+    for(const d of otherDoubles){
+      if(optionSet.size >= 4) break;
+      optionSet.add(fmt(d.t));
+    }
+    // fallback with single-time dishes formatted with a fake +0 stage never — just pad with singles as extra distractors if still short
+    const singles = shuffle(DATA.filter(d => !isDouble(d.t)));
+    for(const d of singles){
+      if(optionSet.size >= 4) break;
+      optionSet.add(fmt(d.t));
+    }
+  } else {
+    const others = shuffle(DATA.filter(d => d!==item && !isDouble(d.t) && fmt(d.t) !== correct));
+    for(const d of others){
+      if(optionSet.size >= 4) break;
+      optionSet.add(fmt(d.t));
+    }
+    // pad from doubles if needed
+    if(optionSet.size < 4){
+      const doubles = shuffle(DATA.filter(d => isDouble(d.t)));
+      for(const d of doubles){
+        if(optionSet.size >= 4) break;
+        optionSet.add(fmt(d.t));
+      }
+    }
+  }
+
+  const opts = shuffle(Array.from(optionSet)).slice(0,4);
+  if(!opts.includes(correct)){ opts[Math.floor(Math.random()*4)] = correct; }
+  return { options: opts, correct };
+}
+
+/* ---------------- State ---------------- */
+let session = [];
+let idx = 0;
+let score = 0;
+let results = []; // {name, correct:bool, correctAnswer, chosen}
+
+const startPanel = document.getElementById('startPanel');
+const quizPanel = document.getElementById('quizPanel');
+const endPanel = document.getElementById('endPanel');
+const countGrid = document.getElementById('countGrid');
+const startBtn = document.getElementById('startBtn');
+const tiersEl = document.getElementById('tiers');
+const scoreStamp = document.getElementById('scoreStamp');
+const qcat = document.getElementById('qcat');
+const qname = document.getElementById('qname');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+const finalScore = document.getElementById('finalScore');
+const finalMsg = document.getElementById('finalMsg');
+const reviewList = document.getElementById('reviewList');
+const retryBtn = document.getElementById('retryBtn');
+const homeBtn = document.getElementById('homeBtn');
+const heroGlyph = document.getElementById('heroGlyph');
+
+let chosenCount = 40;
+countGrid.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.count-btn');
+  if(!btn) return;
+  countGrid.querySelectorAll('.count-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  chosenCount = parseInt(btn.dataset.n,10);
+});
+
+startBtn.addEventListener('click', () => {
+  const n = Math.min(chosenCount, DATA.length);
+  session = shuffle(DATA).slice(0, n);
+  idx = 0; score = 0; results = [];
+  startPanel.classList.add('hidden');
+  endPanel.classList.add('hidden');
+  quizPanel.classList.remove('hidden');
+  renderTiers();
+  renderQuestion();
+});
+
+function renderTiers(){
+  tiersEl.innerHTML = '';
+  session.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'tier-dot';
+    d.id = 'tier-'+i;
+    tiersEl.appendChild(d);
+  });
+}
+
+function updateTier(i, correct){
+  const d = document.getElementById('tier-'+i);
+  if(d){ d.classList.remove('current'); d.classList.add(correct ? 'done-right' : 'done-wrong'); }
+}
+
+function renderQuestion(){
+  feedbackEl.className = 'feedback';
+  feedbackEl.textContent = '';
+  nextBtn.classList.remove('show');
+  scoreStamp.textContent = `${score} / ${session.length}`;
+
+  document.querySelectorAll('.tier-dot').forEach(d=>d.classList.remove('current'));
+  const cur = document.getElementById('tier-'+idx);
+  if(cur) cur.classList.add('current');
+
+  const item = session[idx];
+  qcat.textContent = item.c;
+  qname.textContent = item.n;
+  heroGlyph.textContent = isDouble(item.t) ? '蒸蒸' : '蒸';
+
+  const { options, correct } = buildOptions(item);
+  optionsEl.innerHTML = '';
+  const labels = ['A','B','C','D'];
+
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="lbl">${labels[i]}</span><span>${opt}</span>`;
+    btn.addEventListener('click', () => handleAnswer(btn, opt, correct, item));
+    optionsEl.appendChild(btn);
+  });
+}
+
+function handleAnswer(btn, chosen, correct, item){
+  const allBtns = optionsEl.querySelectorAll('.opt');
+  allBtns.forEach(b => b.disabled = true);
+
+  const isCorrect = chosen === correct;
+  if(isCorrect){
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => {
+      if(b.textContent.trim().endsWith(correct)) b.classList.add('correct');
+    });
+  }
+  allBtns.forEach(b => { if(!b.classList.contains('correct') && !b.classList.contains('wrong')) b.classList.add('dim'); });
+
+  feedbackEl.classList.add('show', isCorrect ? 'good' : 'bad');
+  if(isCorrect){
+    feedbackEl.innerHTML = isDouble(item.t)
+      ? `✓ Chính xác — <b>${correct}</b> (hấp ${item.t[0]} phút, sau đó thao tác rồi hấp thêm ${item.t[1]} phút).`
+      : `✓ Chính xác — <b>${correct}</b>.`;
+  } else {
+    feedbackEl.innerHTML = isDouble(item.t)
+      ? `✗ Chưa đúng. Đáp án đúng là <b>${correct}</b> — nghĩa là hấp ${item.t[0]} phút, sau đó thao tác rồi hấp thêm ${item.t[1]} phút (không phải tổng gộp một mốc).`
+      : `✗ Chưa đúng. Đáp án đúng là <b>${correct}</b>.`;
+  }
+
+  results.push({ name:item.n, cat:item.c, correctAnswer:correct, chosen, ok:isCorrect });
+  updateTier(idx, isCorrect);
+  scoreStamp.textContent = `${score} / ${session.length}`;
+  nextBtn.classList.add('show');
+}
+
+nextBtn.addEventListener('click', () => {
+  idx++;
+  if(idx >= session.length){
+    showEnd();
+  } else {
+    renderQuestion();
+  }
+});
+
+function showEnd(){
+  quizPanel.classList.add('hidden');
+  endPanel.classList.remove('hidden');
+  finalScore.innerHTML = `${score}<span>/${session.length}</span>`;
+  const pct = Math.round((score/session.length)*100);
+  let msg;
+  if(pct === 100) msg = "Xuất sắc — thuộc lòng cả bảng hấp!";
+  else if(pct >= 80) msg = "Rất tốt — chỉ còn vài mốc thời gian cần ôn lại.";
+  else if(pct >= 50) msg = "Khá ổn — nên xem lại các món hấp hai mốc thời gian.";
+  else msg = "Cần ôn lại bảng thời gian hấp, đặc biệt các món hấp hai giai đoạn.";
+  finalMsg.textContent = `${pct}% chính xác. ${msg}`;
+
+  reviewList.innerHTML = '';
+  results.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (r.ok ? 'right' : 'wrong');
+    div.innerHTML = `<span class="mark">${r.ok ? '✓' : '✗'}</span><span class="txt"><b>${r.correctAnswer}</b> — ${r.name}</span>`;
+    reviewList.appendChild(div);
+  });
+}
+
+retryBtn.addEventListener('click', () => {
+  session = shuffle(session);
+  idx = 0; score = 0; results = [];
+  endPanel.classList.add('hidden');
+  quizPanel.classList.remove('hidden');
+  renderTiers();
+  renderQuestion();
+});
+
+homeBtn.addEventListener('click', () => {
+  endPanel.classList.add('hidden');
+  startPanel.classList.remove('hidden');
+});
+</script>
+</body>
+</html>
